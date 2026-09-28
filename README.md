@@ -42,6 +42,17 @@ It reads the REST API (`?rest_route=`) plus the DB for categories/tags (the 2008
 YouTube/Vimeo embeds to iframes, moves every referenced file into `assets/`, and writes
 `_migration/export-report.json`.
 
+## GitHub Pages
+
+https://falkorichter.github.io/madrid-blog-jekyll/ is built by `.github/workflows/pages.yml`
+on every push to `main` (repo setting *Pages → Source: GitHub Actions*). Pages' built-in build
+would not work: it runs neither `_plugins/` (no category/tag pages) nor Jekyll 4, and does not
+know the `/madrid-blog-jekyll/` sub-path. The workflow passes that sub-path as `--baseurl`;
+`_plugins/baseurl_links.rb` prefixes the hard-coded `/assets/…` and `/<slug>/` links inside the
+exported posts and comments. `_config.yml` keeps `baseurl: ""` for a root domain such as
+madrid.falkorichter.de, where the plugin does nothing. Note: the 301s in `.htaccess` only work
+on Apache, not on GitHub Pages.
+
 ## Comments
 
 The blog's **80 real comments** (31 Aug 2008 – 17 Sep 2009, on 30 posts) are part of the
