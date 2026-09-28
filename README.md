@@ -18,7 +18,7 @@ bundle exec jekyll serve      # http://localhost:4000
 |---|---|
 | `_layouts/`, `_includes/`, `assets/css/style.css` | the ported theme (changes marked `port:` in the CSS) |
 | `_posts/` | 64 posts (Markdown where possible, see below), original URLs `/<slug>/` |
-| `_pages/` | Kontakt, Meine Karte, Über Madrid |
+| `_pages/` | Kontakt, Meine Karte, Über Madrid, and the new `/statistiken/` (numbers counted at build time, export numbers from `_data/export_report.json`) |
 | `assets/galleries/<gallery>/` (+ `thumbs/`) | the 14 NextGEN galleries used by posts |
 | `assets/images/YYYY/MM/` | other uploaded images |
 | `assets/js/lightbox.js` | lightbox for gallery thumbnails and post images (←/→, swipe, Esc) |
@@ -41,7 +41,7 @@ python3 _migration/export_rest.py    # rewrites _posts, _pages, assets/galleries
 It reads the REST API (`?rest_route=`) plus the DB for categories/tags (the 2008 DB has
 "shared terms" that current WordPress reports wrongly) and the blogroll. It converts old Flash
 YouTube/Vimeo embeds to iframes, moves every referenced file into `assets/`, and writes
-`_migration/export-report.json`.
+`_data/export_report.json`.
 
 ## Markdown posts
 
