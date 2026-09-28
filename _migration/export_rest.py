@@ -78,6 +78,8 @@ def clean(body):
     # Local WordPress URL (and the old domain, should already be rewritten) -> site-relative.
     body = re.sub(r"https?://(?:localhost:8090|madrid\.falkorichter\.de)(?=/)", "", body)
     body = re.sub(r"https?://(?:localhost:8090|madrid\.falkorichter\.de)\b", "/", body)
+    # Links written without a scheme ("www.flickr.com/…") resolve as paths on this site.
+    body = re.sub(r"""(href=["'])(www\.)""", r"\1http://\2", body)
     # Flash video players -> iframes.
     body = re.sub(r"<object.*?</object>", embed_iframe, body, flags=re.S)
     body = re.sub(r"<embed[^>]*youtube\.com/v/[^>]*>(?:</embed>)?", embed_iframe, body)
