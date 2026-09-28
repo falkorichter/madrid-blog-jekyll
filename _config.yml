@@ -1,0 +1,59 @@
+# Falko en Madrid (madrid.falkorichter.de, 2008/09) — static Jekyll port of the WordPress blog.
+# Theme: "Falko en Madrid based on Beauty Bling" (falkoenmadrid), ported to Liquid.
+# Values below were read from madrid_options in the WordPress DB.
+
+title: Falko en Madrid          # blogname
+description: 5 Monate Spanien   # blogdescription
+lang: de
+url: "https://madrid.falkorichter.de"
+baseurl: ""
+timezone: Europe/Madrid
+
+# --- URLs: must match the old WordPress permalinks -------------------------
+permalink: /:title/             # permalink_structure = /%postname%/
+paginate: 10                    # posts_per_page
+paginate_path: /page/:num/
+category_base: /category/       # category_base / tag_base empty → WordPress defaults
+tag_base: /tag/
+
+excerpt_separator: "<!--more-->"
+
+# Sidebar map (sidebar.php picked one of these four views at random on every request)
+sidebar_maps:
+  - "https://maps.google.com/maps/ms?hl=de&ptab=2&ie=UTF8&oe=UTF8&s=AARTsJrTFbiJHBF1fGQzrrIos0czZFvekQ&msa=0&msid=117502092996839527880.000456c50734172f2692d&ll=39.97712,-1.845703&spn=10.098678,17.578125&t=p&z=5&output=embed"
+  - "https://maps.google.com/maps/ms?hl=de&ptab=2&ie=UTF8&oe=UTF8&s=AARTsJrTFbiJHBF1fGQzrrIos0czZFvekQ&msa=0&msid=117502092996839527880.000456c50734172f2692d&ll=36.527295,-7.910156&spn=21.132558,35.15625&t=p&z=4&output=embed"
+  - "https://maps.google.com/maps/ms?hl=de&ptab=2&ie=UTF8&oe=UTF8&s=AARTsJrTFbiJHBF1fGQzrrIos0czZFvekQ&msa=0&msid=117502092996839527880.000456c50734172f2692d&ll=40.111689,-3.823242&spn=10.078867,17.578125&t=p&z=5&output=embed"
+  - "https://maps.google.com/maps/ms?hl=de&ptab=2&ie=UTF8&oe=UTF8&s=AARTsJrTFbiJHBF1fGQzrrIos0czZFvekQ&msa=0&msid=117502092996839527880.000456c50734172f2692d&ll=40.476203,-3.742218&spn=0.313389,0.549316&t=p&z=10&output=embed"
+sidebar_map_link: "https://maps.google.com/maps/ms?hl=de&ptab=2&ie=UTF8&oe=UTF8&msa=0&msid=117502092996839527880.000456c50734172f2692d&ll=36.527295,-7.910156&spn=21.132558,35.15625&t=p&z=4&source=embed"
+
+# Social icons from sidebar.php (kept as they were in 2009)
+social:
+  - { name: YouTube, url: "http://www.youtube.com/deadfalkon", icon: ico_youtube.png }
+  - { name: Twitter, url: "http://twitter.com/volkersfreunde", icon: ico_twitter.png }
+  - { name: Flickr, url: "http://www.flickr.com/photos/fotofalko", icon: ico_flickr.png }
+  - { name: Picasa Webalbum, url: "http://picasaweb.google.com/deadfalkon", icon: ico_picasa.png }
+  - { name: LinkedIn, url: "http://www.linkedin.com/in/falkorichter", icon: ico_linkedin.png }
+  - { name: Xing, url: "https://www.xing.com/profile/Falko_Richter2", icon: ico_xing.png }
+  - { name: Facebook, url: "http://www.new.facebook.com/profile.php?id=504297080", icon: ico_facebook.png }
+  - { name: Couchsurfing, url: "http://www.couchsurfing.com/profile.html?id=1XNBFVU", icon: ico_couchsurfing.png }
+  - { name: Del.icio.us, url: "http://del.icio.us/deadfalkon", icon: ico_delicious.png }
+
+defaults:
+  - scope: { path: "", type: posts }
+    values:
+      layout: post
+      render_with_liquid: false   # post bodies are HTML from WordPress
+  - scope: { path: "_pages", type: pages }
+    values:
+      layout: page
+      render_with_liquid: false
+
+plugins:
+  - jekyll-paginate
+  - jekyll-feed
+
+feed:
+  path: feed/index.xml          # WordPress served the feed at /feed/
+
+include: [.htaccess, _pages]
+exclude: [Gemfile, Gemfile.lock, README.md, vendor, .bundle, _migration]

@@ -1,0 +1,7 @@
+<ul>
+{%- for c in site.data.categories %}
+	{%- if site.categories[c.name] %}
+	<li class="cat-item"><a href="{{ site.category_base | append: c.slug | append: '/' | relative_url }}">{{ c.name }}</a></li>
+	{%- endif %}
+{%- endfor %}
+</ul>

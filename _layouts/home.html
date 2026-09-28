@@ -1,0 +1,33 @@
+---
+layout: default
+---
+{%- comment -%} index.php on the home page: full posts (teaser up to <!--more-->) + feedback bar {%- endcomment -%}
+{%- assign posts = paginator.posts | default: site.posts %}
+{%- for post in posts %}
+<div class="post" id="post-{{ post.wp_id }}">
+	<h3 class="storytitle"><a href="{{ post.url | relative_url }}" rel="bookmark">{{ post.title }}</a></h3>
+	{% include post-meta.html post=post %}
+	<div class="storycontent">
+	{%- if post.content contains site.excerpt_separator %}
+		{{ post.excerpt }}
+		<p><a href="{{ post.url | relative_url }}#more" class="more-link">(more...)</a></p>
+	{%- else %}
+		{{ post.content }}
+	{%- endif %}
+	</div>
+	<div class="feedback">
+		<div class="feedback-left">
+			<a href="{{ post.url | relative_url }}#comments">{% include comment-count.html post=post %}</a>
+			<a href="{{ post.url | relative_url }}" rel="bookmark" class="permalink"><img src="{{ '/assets/images/theme/star.png' | relative_url }}" alt="" />Permalink</a>
+		</div>
+		<div class="feedback-right">
+			<a href="{{ post.url | relative_url }}" rel="bookmark">Eintrag zeigen<img src="{{ '/assets/images/theme/read.png' | relative_url }}" alt="" /></a>
+		</div>
+	</div>
+</div>
+{%- endfor %}
+
+<div class="navigation">
+	<div class="alignleft">{% if paginator.next_page %}<a href="{{ paginator.next_page_path | relative_url }}">Previous Entries</a>{% endif %}</div>
+	<div class="alignright">{% if paginator.previous_page %}<a href="{{ paginator.previous_page_path | relative_url }}">Next Entries</a>{% endif %}</div>
+</div>

@@ -1,0 +1,2 @@
+	{%- assign impressum = site.pages | where: "url", "/impressum/" %}
+	<div id="footer">Theme „Falko en Madrid“ (based on Beauty Bling by Ultimate Cosmetics) · statisch archiviert mit <a href="https://jekyllrb.com">Jekyll</a>{% if impressum.size > 0 %} · <a href="{{ '/impressum/' | relative_url }}">Impressum</a>{% endif %}</div>

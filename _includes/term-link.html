@@ -1,0 +1,4 @@
+{%- comment -%} Link a category/tag name to its original /category|tag/<slug>/ URL. {%- endcomment -%}
+{%- if include.kind == "tag" -%}{%- assign _t = site.data.tags | where: "name", include.name | first -%}{%- assign _base = site.tag_base -%}
+{%- else -%}{%- assign _t = site.data.categories | where: "name", include.name | first -%}{%- assign _base = site.category_base -%}{%- endif -%}
+{%- if _t -%}<a href="{{ _base | append: _t.slug | append: '/' | relative_url }}" rel="{{ include.kind | default: 'category' }} tag"{% if include.style %} style="{{ include.style }}"{% endif %}>{{ include.name }}</a>{%- else -%}{{ include.name }}{%- endif -%}

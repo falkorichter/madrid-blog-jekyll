@@ -1,0 +1,514 @@
+/*
+Theme Name: Falko en Madrid based on Beauty Bling
+Version: 1.5
+Author: Ultimate Cosmetics & Falko Richter (www.falkorichter.de)
+Ported from the WordPress theme "falkoenmadrid" to Jekyll. Original rules are kept;
+changes are marked with "port:". Dropped: newsletter, comment form and calendar styles.
+*/
+
+body {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 11px;
+	color: #000;
+	text-align: center;
+	padding: 0 16px;
+	margin: 0;
+	background: #FFFFFF url(../images/theme/background.gif) repeat-x fixed;
+}
+
+#container {
+	width: 920px;
+	margin: 0 auto;
+	background-color: #fff;
+	padding: 0;
+	text-align: left;
+	background-image: url(../images/theme/back.gif);
+	border-left: 16px solid #dadada;
+}
+
+/* port: clear the floats inside the container (the old footer did this implicitly) */
+#container::after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+#header {
+	padding-top:15px;
+	height:85px;
+	margin-bottom:15px;
+}
+
+/* port: was an inline style on the wrapper div */
+#header .header-title {
+	float: left;
+	display: inline;
+}
+
+#header h1 {
+	margin: 0;
+	padding: 0 0 0 15px;
+}
+
+#content #header h1 a {
+	color: #000;
+	font-family: arial,helvetica,sans-serif;
+	font-weight: bold;
+	font-size: 30px;
+	letter-spacing: -1px;
+	text-decoration: none;
+}
+
+/* port: was an inline style (width:400px;float:right) in sidebar.php */
+#sidebar {
+	width: 400px;
+	float: right;
+}
+
+#header-image {
+	width:400px;
+	height:300px;
+	float:left;
+	padding-bottom:10px;
+}
+
+#header-image iframe {
+	display: block;
+	border: 0;
+}
+
+/* port: was an inline style on the "Größere Kartenansicht" link */
+#header-image .map-link {
+	float: right;
+}
+#header-image .map-link a {
+	color: #0000FF;
+}
+
+#topmenu {
+	display:inline;
+	float:right;
+	width:110px;
+	height:30px;
+	margin-top:10px;
+}
+
+#topmenu a {
+	display:inline;
+	border:none;
+	margin:0;
+	padding:0;
+}
+
+#menu {
+	width: 200px;
+	margin: 0;
+	padding: 16px 0 0 0;
+	float: left;
+}
+
+#extras {
+	width: 200px;
+	margin: 0;
+	padding: 16px 0 0 0;
+	float: right;
+}
+
+#menu ul, #extras ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#menu ul ul, #extras ul ul {
+	margin-left: 10px;
+	margin-bottom: 8px;
+}
+
+#menu ul li, #extras ul li {
+	color:#333;
+	font-size:14px;
+	font-family:Arial, Helvetica, sans-serif;
+	padding:2px 0 2px 0;
+}
+
+#menu ul li a, #extras ul li a {
+	color:#333;
+	text-decoration:none;
+}
+
+.sideblock {
+	padding: 0 16px 16px 26px;
+}
+
+/* port: "Left Navigation" widgets were wrapped in their own .sideblock inside .sideblock */
+#menu .sideblock {
+	padding: 0 16px 8px 16px;
+}
+
+.sideblock a:hover {
+	color:#FFF;
+}
+
+#content {
+	margin: 0px 416px 16px 16px;
+	padding: 8px 0;
+}
+
+.post {
+	margin: 0 0 32px 0;
+	padding: 0;
+	font-size: 11.5px;
+}
+
+.post a:hover {
+	color:#D44747;
+}
+
+.meta, .meta a {
+	font-size: 12px;
+	font-weight:bold;
+	color: #D44747;
+	text-decoration:none;
+}
+
+.meta a:hover {
+	font-size: 12px;
+	color: #000;
+}
+
+.storycontent {
+	line-height:150%;
+	font-size:13px;
+	color:#000;
+}
+
+/* port: old embeds/images were sized for this ~488px column — never overflow it */
+.storycontent img, .storycontent iframe, .storycontent video {
+	max-width: 100%;
+}
+.storycontent img {
+	height: auto;
+}
+
+.imagelink img {
+	margin-right: 8px;
+	margin-left: 8px;
+	margin-bottom: 5px;
+}
+
+#footer{
+	clear:both;
+	margin-right: 416px; /* port: stay in the content column, next to the sidebar */
+	padding: 30px 0 25px 16px;
+	color: #333;
+	font-size:12px;
+}
+#footer a { color: #333; }
+#footer a:hover { color: #D44747; }
+
+/* general text styles */
+h1 , a h1, h1 a{
+	font-size: 12px;
+}
+
+h2 {
+	font-size: 14px;
+	font-weight: bold;
+	margin: 0;
+	padding: 0;
+}
+
+#content h2 , a h2, h2 a {
+	color: #D44747;
+}
+
+h3, h3 a, a h3 {
+	font-size: 16px;
+	font-weight: normal;
+	margin: 0 0 4px 0;
+	padding: 0;
+	color: #D44747;
+}
+
+h3.storytitle, h3.storytitle a {
+	font-size: 20px;
+	letter-spacing: -0.025em;
+	text-decoration: none;
+	color: #000;
+}
+
+h3.storytitle a:hover {
+	color: #D44747;
+}
+#menu h3, #extras h3 {
+	font-size: 20px;
+}
+
+a { color: #000; }
+a img { border: none; }
+
+/* comment styles */
+
+#commentlist {
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 32px 0;
+}
+
+#commentlist li {
+	background-color: #f8f8f8;
+	padding: 8px;
+	margin: 8px 0;
+	font-size: 13px;
+	line-height: 150%;
+}
+
+#commentlist li p {
+	margin: 0 0 16px 0;
+}
+
+/* port: the "closed" notice under the comments */
+#content > p {
+	font-size: 11px;
+}
+
+/* search form styles */
+
+form#searchform {
+	margin: 0;
+	padding: 0;
+}
+
+#searchform input {
+	border: none;
+	background-color: #fff;
+	margin-bottom: 4px;
+	color:#333;
+	font-weight:bold;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 11px;
+}
+
+/* port: the WordPress search widget (text field + "Search" button) */
+#searchform input#s {
+	display: block;
+	width: 130px;
+	height: 20px;
+	padding: 2px 4px;
+	margin-top: 6px;
+}
+
+#header h2 {
+	font-weight: bold;
+	font-size: 18px;
+	margin: 0;
+	padding: 0 0 0 60px;
+	color:#93001A;
+}
+
+.feedback {
+	clear: left;
+	background:#dadada;
+	height:26px;
+	padding:8px 8px 0 8px;
+}
+
+/* port: were inline styles in index.php */
+.feedback-left { float: left; display: inline; }
+.feedback-right { float: right; display: inline; }
+.feedback img { vertical-align: middle; }
+.feedback .permalink { margin-left: 10px; }
+.feedback .permalink img { margin-right: 4px; }
+
+.feedback a {
+	display:inline;
+	color:#000;
+	font-weight:bold;
+	font-size:12px;
+	text-decoration:none;
+	border:none;
+}
+
+.feedback a:hover {
+	color:#FFF;
+}
+
+.navigation {
+	overflow: hidden; /* port */
+	margin-bottom: 16px;
+}
+
+.navigation a {
+	color:#D44747;
+	text-decoration:none;
+	font-size:14px;
+	font-weight:bold;
+}
+
+.alignleft {
+	float:left;
+}
+
+.alignright {
+	float:right;
+}
+
+#extras a:hover, #menu a:hover { color:#FFF; }
+
+.post img {
+	margin-right:4px;
+	margin-bottom:4px;
+}
+
+.sidebar_icons ul{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	margin-left:10px;
+}
+
+.sidebar_icons li{
+	display:inline;
+}
+
+/* port: tags line under a single post, archive titles */
+.tags { font-size: 12px; color: #333; }
+.archive-title { margin-bottom: 16px; }
+
+/* ===== port: NextGEN gallery grid ([gallery=N]) =====
+   Same look as the local WordPress (mu-plugins/madrid.php): fixed 100x75 thumbnails. */
+
+.ngg-gallery {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin: 1em 0;
+}
+
+.ngg-gallery a {
+	display: block;
+	line-height: 0;
+}
+
+.post .ngg-gallery img {
+	width: 100px;
+	height: 75px;
+	margin: 0;
+	object-fit: cover;
+	border: 1px solid #ccc;
+}
+
+.ngg-gallery a:hover img, .ngg-gallery a:focus-visible img {
+	border-color: #D44747;
+	outline: 1px solid #D44747;
+}
+
+/* ===== port: lightbox (assets/js/lightbox.js) ===== */
+
+.storycontent a.lightbox-link, .storycontent img.zoomable {
+	cursor: zoom-in;
+}
+
+dialog.lightbox {
+	max-width: none;
+	max-height: none;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: #FFFFFF;
+	font-family: arial, helvetica, sans-serif;
+	overflow: hidden;
+}
+
+dialog.lightbox::backdrop {
+	background: rgba(20, 20, 20, 0.94);
+}
+
+dialog.lightbox figure {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	margin: 0;
+	padding: 52px 64px;
+	box-sizing: border-box;
+}
+
+dialog.lightbox img {
+	max-width: 100%;
+	max-height: calc(100% - 36px);
+	object-fit: contain;
+	border: 4px solid #FFFFFF;
+	background: #FFFFFF;
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+	transition: opacity 0.15s;
+}
+
+dialog.lightbox.is-loading img {
+	opacity: 0.35;
+}
+
+dialog.lightbox figcaption {
+	margin-top: 10px;
+	font-size: 13px;
+	text-align: center;
+	color: #dadada;
+}
+
+dialog.lightbox .lightbox-counter {
+	font-weight: bold;
+	color: #D44747;
+	margin-right: 8px;
+}
+
+dialog.lightbox button {
+	position: fixed;
+	border: 0;
+	background: transparent;
+	color: #FFFFFF;
+	font: bold 36px/1 arial, helvetica, sans-serif;
+	padding: 8px 14px;
+	cursor: pointer;
+}
+
+dialog.lightbox button:hover, dialog.lightbox button:focus-visible {
+	color: #D44747;
+	outline: none;
+}
+
+dialog.lightbox .lightbox-close { top: 8px; right: 8px; }
+dialog.lightbox .lightbox-prev,
+dialog.lightbox .lightbox-next { top: 50%; transform: translateY(-50%); font-size: 56px; padding: 16px 18px; }
+dialog.lightbox .lightbox-prev { left: 4px; }
+dialog.lightbox .lightbox-next { right: 4px; }
+dialog.lightbox button[hidden] { display: none; }
+
+/* ===== port: narrow screens =====
+   The original is a fixed 920px layout. Below that, content first, then the sidebar. */
+
+@media (max-width: 960px) {
+	body { padding: 0; }
+	#container {
+		width: auto;
+		border-left: 0;
+		background-image: none;
+		display: flex;
+		flex-direction: column;
+	}
+	#content { order: -1; margin: 0; padding: 8px 16px; }
+	#sidebar { width: auto; float: none; background: #dadada; padding-bottom: 16px; }
+	#header { height: auto; overflow: hidden; }
+	#header h1 { padding: 0; }
+	#header h2 { padding: 0; }
+	#header-image { float: none; width: auto; height: auto; padding: 0 16px 10px; }
+	#header-image iframe { width: 100%; height: 260px; }
+	#menu, #extras { float: none; width: auto; }
+	#footer { padding: 16px; margin-right: 0; }
+	dialog.lightbox figure { padding: 52px 8px; }
+	dialog.lightbox .lightbox-prev, dialog.lightbox .lightbox-next { top: auto; bottom: 8px; transform: none; }
+}

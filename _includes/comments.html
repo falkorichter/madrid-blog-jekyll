@@ -1,0 +1,19 @@
+{%- comment -%}
+  comments.php, read-only: the old comments are shown, the form is gone (comments were
+  closed on the archived blog anyway).
+{%- endcomment -%}
+{%- assign _comments = site.data.comments | where: "url", page.url -%}
+<h2 id="comments">{% if _comments.size == 0 %}No Comments{% elsif _comments.size == 1 %}1 Comment{% else %}{{ _comments.size }} Comments{% endif %}</h2>
+{%- if _comments.size > 0 %}
+<ul id="commentlist">
+{%- for c in _comments %}
+	<li id="comment-{{ c.id }}">
+	{{ c.content }}
+	<div class="meta"><cite>Comment by {% if c.author_url and c.author_url != "" %}<a href="{{ c.author_url }}" rel="external nofollow ugc">{{ c.author }}</a>{% else %}{{ c.author }}{% endif %} &#8212; {{ c.date | date: "%d %B %Y" }} @ <a href="#comment-{{ c.id }}">{{ c.date | date: "%H:%M" }}</a></cite></div>
+	</li>
+{%- endfor %}
+</ul>
+{%- else %}
+<p>No comments yet.</p>
+{%- endif %}
+<p>Sorry, the comment form is closed at this time.</p>

@@ -1,0 +1,2 @@
+{%- comment -%} index.php: author | categories | date {%- endcomment -%}
+<div class="meta">{{ include.post.author }} | {% for c in include.post.categories %}{% include term-link.html name=c %}{% unless forloop.last %},{% endunless %}{% endfor %} | {% include date-en.html date=include.post.date %}</div>

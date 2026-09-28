@@ -1,0 +1,127 @@
+{%- comment -%}
+  sidebar.php: map on top, then two widget columns. Widgets follow sidebars_widgets in the DB:
+  "Left Navigation" (#menu): search, blogroll, tag cloud, categories
+  "Right Sidebar" (#extras): pages, recent posts, recent comments, categories
+  Dropped: Meta (login/admin), the Google AJAX video bar (API is gone), Google Analytics.
+{%- endcomment -%}
+<div id="sidebar">
+
+<div id="header-image">
+	<iframe id="sidebar-map" width="400" height="300" frameborder="0" scrolling="no" loading="lazy" title="Karte: Spanien 2008/09" src="{{ site.sidebar_maps[3] }}"></iframe>
+	<small class="map-link"><a href="{{ site.sidebar_map_link }}">Größere Kartenansicht</a></small>
+</div>
+<div style="clear:both"></div>
+
+<div id="extras">
+	<div class="sideblock">
+		<ul>
+			<li>
+				<h3>Pages</h3>
+				<ul>
+				{%- assign pages_sorted = site.pages | where: "nav", true | sort: "title" %}
+				{%- for p in pages_sorted %}
+					<li class="page_item"><a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>
+				{%- endfor %}
+				</ul>
+			</li>
+			<li>
+				<h3>Letzte Artikel</h3>
+				<ul>
+				{%- for post in site.posts limit: 3 %}
+					<li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+				{%- endfor %}
+				</ul>
+			</li>
+			{%- assign recent_comments = site.data.comments | sort: "date" | reverse %}
+			{%- if recent_comments.size > 0 %}
+			<li>
+				<h3>letzte Kommentare</h3>
+				<ul id="recentcomments">
+				{%- for c in recent_comments limit: 3 %}
+					<li class="recentcomments">{{ c.author }} on <a href="{{ c.url | relative_url }}#comment-{{ c.id }}">{{ c.post_title }}</a></li>
+				{%- endfor %}
+				</ul>
+			</li>
+			{%- endif %}
+			<li>
+				<h3>Categories</h3>
+				{% include category-list.html %}
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div id="menu">
+	<div class="sideblock">
+		<div class="sidebar_icons">
+			<ul>
+			{%- for s in site.social %}
+				<li><a href="{{ s.url }}" title="{{ s.name }} Falko Richter"><img src="{{ '/assets/images/theme/icons/' | append: s.icon | relative_url }}" alt="{{ s.name }} Falko Richter" width="16" height="16" /></a></li>
+			{%- endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="sideblock">
+		<form role="search" method="get" id="searchform" action="https://duckduckgo.com/">
+			<input type="hidden" name="sites" value="{{ site.url | remove: 'https://' | remove: 'http://' }}" />
+			<input type="text" name="q" id="s" aria-label="Suchen" />
+			<input type="submit" id="searchsubmit" value="Search" />
+		</form>
+	</div>
+
+	{%- if site.data.blogroll.size > 0 %}
+	<div class="sideblock">
+		<h3>Blogroll</h3>
+		<ul class="xoxo blogroll">
+		{%- for l in site.data.blogroll %}
+			<li><a href="{{ l.url }}">{{ l.name }}</a></li>
+		{%- endfor %}
+		</ul>
+	</div>
+	{%- endif %}
+
+	{%- if site.tags.size > 0 %}
+	<div class="sideblock">
+		<h3>Tags</h3>
+		<div class="tagcloud">
+		{%- comment -%} wp_tag_cloud(): top 45 tags, alphabetical, 8–22pt {%- endcomment -%}
+		{%- assign ranked = "" | split: "" -%}
+		{%- for t in site.tags -%}
+			{%- capture key -%}{{ t[1].size | prepend: "00000" | slice: -5, 5 }}|{{ t[0] }}{%- endcapture -%}
+			{%- assign ranked = ranked | push: key -%}
+		{%- endfor -%}
+		{%- assign ranked = ranked | sort | reverse -%}
+		{%- assign top = "" | split: "" -%}
+		{%- for k in ranked limit: 45 -%}{%- assign top = top | push: k -%}{%- endfor -%}
+		{%- assign max = top.first | split: "|" | first | plus: 0 -%}
+		{%- assign min = top.last | split: "|" | first | plus: 0 -%}
+		{%- assign spread = max | minus: min -%}{%- if spread < 1 -%}{%- assign spread = 1 -%}{%- endif -%}
+		{%- assign names = "" | split: "" -%}
+		{%- for k in top -%}{%- assign n = k | split: "|" | last -%}{%- assign names = names | push: n -%}{%- endfor -%}
+		{%- assign names = names | sort_natural -%}
+		{%- for name in names %}
+			{%- assign n = site.tags[name].size | minus: min -%}
+			{%- assign pt = n | times: 14 | divided_by: spread | plus: 8 -%}
+			{%- capture tag_style %}font-size: {{ pt }}pt;{% endcapture %}
+			{% include term-link.html kind="tag" name=name style=tag_style %}
+		{%- endfor %}
+		</div>
+	</div>
+	{%- endif %}
+
+	<div class="sideblock">
+		<h3>Categories</h3>
+		{% include category-list.html %}
+	</div>
+</div>
+
+</div>
+<script>
+	/* sidebar.php showed one of four map views at random */
+	(function () {
+		var maps = {{ site.sidebar_maps | jsonify }};
+		var frame = document.getElementById("sidebar-map");
+		if (frame) frame.src = maps[Math.floor(Math.random() * maps.length)];
+	})();
+</script>

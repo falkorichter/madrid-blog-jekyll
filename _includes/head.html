@@ -1,0 +1,9 @@
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>{{ site.title }}{% if page.title %} &raquo; {{ page.title | strip_html }}{% endif %}</title>
+	<meta name="description" content="{% if page.excerpt and page.collection == 'posts' %}{{ page.excerpt | strip_html | normalize_whitespace | truncate: 160 | escape }}{% else %}{{ site.title }} - {{ site.description }}{% endif %}" />
+	<link rel="canonical" href="{{ page.url | absolute_url }}" />
+	<link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}" type="text/css" media="screen" />
+	{% feed_meta %}
+</head>
