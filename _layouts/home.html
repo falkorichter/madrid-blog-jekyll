@@ -2,6 +2,13 @@
 layout: default
 ---
 {%- comment -%} index.php on the home page: full posts (teaser up to <!--more-->) + feedback bar {%- endcomment -%}
+{%- comment -%} Old WordPress search links (/?s=…) → the Pagefind search page {%- endcomment %}
+<script>
+	(function () {
+		var s = new URLSearchParams(location.search).get("s");
+		if (s !== null) location.replace("{{ '/suche/' | relative_url }}?q=" + encodeURIComponent(s));
+	})();
+</script>
 {%- assign posts = paginator.posts | default: site.posts %}
 {%- for post in posts %}
 <div class="post" id="post-{{ post.wp_id }}">

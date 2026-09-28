@@ -1,8 +1,9 @@
 ---
 layout: default
 ---
-<div class="post" id="post-{{ page.wp_id }}">
-	<h3 class="storytitle"><a href="{{ page.url | relative_url }}" rel="bookmark">{{ page.title }}</a></h3>
+<div class="post" id="post-{{ page.wp_id }}" data-pagefind-body>
+	{% include search-meta.html post=page %}
+	<h3 class="storytitle" data-pagefind-meta="title"><a href="{{ page.url | relative_url }}" rel="bookmark">{{ page.title }}</a></h3>
 	{% include post-meta.html post=page %}
 	<div class="storycontent">
 		{{ content | replace: site.excerpt_separator, '<span id="more"></span>' }}

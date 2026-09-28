@@ -1,0 +1,35 @@
+---
+title: "Suche"
+permalink: "/suche/"
+render_with_liquid: true   # hand-written page (the WordPress pages have it off)
+---
+{%- comment -%}
+  New page (not from WordPress): full-text search over all posts with Pagefind. The index
+  (/pagefind/) is built after `jekyll build` (see .github/workflows/pages.yml and README);
+  plain `jekyll serve` has none, the note below shows up then. The sidebar search box sends
+  ?q=…, old WordPress search links (/?s=…) are forwarded here from the home page.
+{%- endcomment -%}
+<link rel="stylesheet" href="{{ '/pagefind/pagefind-ui.css' | relative_url }}">
+<div id="search"></div>
+<p id="search-missing" hidden>Der Suchindex fehlt: Er wird erst nach <code>jekyll build</code> mit
+<code>npx pagefind --site _site</code> erzeugt (siehe README).</p>
+<script src="{{ '/pagefind/pagefind-ui.js' | relative_url }}"
+	onerror="document.getElementById('search-missing').hidden = false"></script>
+<script>
+	window.addEventListener("DOMContentLoaded", function () {
+		if (typeof PagefindUI === "undefined") return;
+		var ui = new PagefindUI({
+			element: "#search",
+			baseUrl: "{{ '/' | relative_url }}",
+			showImages: false,
+			showSubResults: true,
+			autofocus: true,
+			processResult: function (result) {
+				if (result.meta.datum) result.meta.title += " (" + result.meta.datum + ")";
+				return result;
+			}
+		});
+		var q = new URLSearchParams(location.search).get("q");
+		if (q) ui.triggerSearch(q);
+	});
+</script>

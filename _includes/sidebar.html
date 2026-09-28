@@ -63,8 +63,7 @@
 	</div>
 
 	<div class="sideblock">
-		<form role="search" method="get" id="searchform" action="https://duckduckgo.com/">
-			<input type="hidden" name="sites" value="{{ site.url | remove: 'https://' | remove: 'http://' }}" />
+		<form role="search" method="get" id="searchform" action="{{ '/suche/' | relative_url }}">
 			<input type="text" name="q" id="s" aria-label="Suchen" />
 			<input type="submit" id="searchsubmit" value="Search" />
 		</form>

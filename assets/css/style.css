@@ -567,3 +567,13 @@ p.stats-note, .stats-list .meta {
 	font-weight: normal;
 	font-size: 12px;
 }
+
+/* Search page (/suche/, Pagefind default UI) in the theme's colors */
+#search .pagefind-ui {
+	--pagefind-ui-scale: 0.8;
+	--pagefind-ui-primary: #D44747;
+	--pagefind-ui-text: #000;
+	--pagefind-ui-border: #ccc;
+	--pagefind-ui-tag: #eee;
+	--pagefind-ui-font: arial, helvetica, sans-serif;
+}
