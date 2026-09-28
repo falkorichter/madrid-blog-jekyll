@@ -4,7 +4,7 @@ The 2008/09 blog **madrid.falkorichter.de** ("Falko en Madrid – 5 Monate Spani
 converted from WordPress to a static Jekyll site with a port of its original theme
 `falkoenmadrid` (based on *Beauty Bling*).
 
-* [] bring back `madrid.falkorichter.de`
+* [ ] bring back `madrid.falkorichter.de`
 * [x] serve via github pages
 
 ```sh
