@@ -1,0 +1,6 @@
+{%- comment -%} Current contact links from _config.yml (contact_links) {%- endcomment -%}
+<ul class="contact-links">
+{%- for l in site.contact_links %}
+	<li><a href="{{ l.url }}" rel="me noopener">{{ l.name }}</a> <span class="contact-handle">{{ l.handle }}</span></li>
+{%- endfor %}
+</ul>

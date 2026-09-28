@@ -57,3 +57,8 @@ plugins:
 
 include: [_pages]
 exclude: [Gemfile, Gemfile.lock, README.md, vendor, .bundle, _migration]
+
+# Kontakt page: where to find me today (rel="me" lets Mastodon verify the link)
+contact_links:
+  - { name: Instagram, handle: "@volkersfreunde", url: "https://www.instagram.com/volkersfreunde" }
+  - { name: Mastodon, handle: "@volkersfreunde@berlin.social", url: "https://berlin.social/@volkersfreunde" }

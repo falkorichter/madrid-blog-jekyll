@@ -543,4 +543,27 @@ table.stats th {
 p.stats-note, .stats-list .meta {
 	font-size: 11px;
 	color: #888;
+
+/* port: contact links on the Kontakt page (_includes/contact-links.html) */
+.storycontent ul.contact-links {
+	list-style: none;
+	margin: 0 0 16px 0;
+	padding: 0;
+}
+.storycontent ul.contact-links li {
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 4px;
+}
+.storycontent ul.contact-links a {
+	color: #D44747;
+	text-decoration: none;
+}
+.storycontent ul.contact-links a:hover {
+	color: #000;
+}
+.contact-handle {
+	color: #676767;
+	font-weight: normal;
+	font-size: 12px;
 }
