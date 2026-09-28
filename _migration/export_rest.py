@@ -13,7 +13,7 @@ Writes (and replaces on every run):
                                       more than the old Google Analytics notice)
   assets/galleries/<gallery>/…        NextGEN gallery photos (+ thumbs/)
   assets/images/YYYY/MM/…, assets/files/YYYY/MM/…   other referenced uploads
-  _data/{categories,tags,blogroll,comments,moved_files}.json
+  _data/{categories,tags,blogroll,comments}.json
   _migration/export-report.json
 
 Read-only towards WordPress and the DB. Usage (from the madrid-site/ folder):
@@ -423,7 +423,6 @@ def main():
     write_json("comments.json", data)
     report["comments"] = len(data)
 
-    write_json("moved_files.json", [{"from": old, "to": new} for old, new in sorted(moved.items())])
 
     with open(os.path.join(SITE, "_migration", "export-report.json"), "w", encoding="utf-8") as f:
         json.dump(report, f, ensure_ascii=False, indent=2, sort_keys=True)

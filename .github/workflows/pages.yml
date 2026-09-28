@@ -28,7 +28,11 @@ jobs:
           bundler-cache: true
       - id: pages
         uses: actions/configure-pages@v5
-      - run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+      # url/baseurl of the Pages site (absolute links: canonical, feed); _config.yml keeps
+      # the production domain. Written outside the repo so nothing is committed.
+      - run: |
+          printf 'url: "%s"\nbaseurl: "%s"\n' "${{ steps.pages.outputs.origin }}" "${{ steps.pages.outputs.base_path }}" > "$RUNNER_TEMP/pages.yml"
+          bundle exec jekyll build --config "_config.yml,$RUNNER_TEMP/pages.yml"
         env:
           JEKYLL_ENV: production
       - uses: actions/upload-pages-artifact@v3

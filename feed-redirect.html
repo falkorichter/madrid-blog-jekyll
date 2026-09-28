@@ -1,0 +1,24 @@
+---
+layout: null
+permalink: /feed/
+sitemap: false
+---
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+<head>
+	<meta charset="utf-8" />
+	<title>Feed &raquo; {{ site.title }}</title>
+	{%- comment -%}
+	  WordPress served the feed at /feed/. Static hosts can't serve XML as a folder index
+	  everywhere, so the feed lives at /feed.xml and this page forwards to it: browsers follow
+	  the refresh, feed readers find the feed via the <link rel="alternate"> (autodiscovery).
+	{%- endcomment %}
+	<link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ '/feed.xml' | absolute_url }}" />
+	<link rel="canonical" href="{{ '/feed.xml' | absolute_url }}" />
+	<meta name="robots" content="noindex" />
+	<meta http-equiv="refresh" content="0; url={{ '/feed.xml' | relative_url }}" />
+</head>
+<body>
+	<p>Der Feed ist hier: <a href="{{ '/feed.xml' | relative_url }}">{{ '/feed.xml' | absolute_url }}</a></p>
+</body>
+</html>

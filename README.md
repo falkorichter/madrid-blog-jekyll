@@ -24,7 +24,7 @@ bundle exec jekyll serve      # http://localhost:4000
 | `assets/js/lightbox.js` | lightbox for gallery thumbnails and post images (←/→, swipe, Esc) |
 | `_data/comments.json` | the 80 real comments, shown read-only (see [Comments](#comments)) |
 | `_data/{categories,tags,blogroll}.json` | sidebar data; slugs keep `/category/…` and `/tag/…` URLs |
-| `_data/moved_files.json` → `.htaccess` | 301 redirects from the old `/wp-content/…` file URLs |
+| `feed-redirect.html` | `/feed/` (the old WordPress feed URL) forwards to `/feed.xml` |
 | `_plugins/taxonomy_pages.rb` | generates the category/tag archive pages |
 | `_migration/export_rest.py` | the exporter (see below) |
 
@@ -50,8 +50,12 @@ would not work: it runs neither `_plugins/` (no category/tag pages) nor Jekyll 4
 know the `/madrid-blog-jekyll/` sub-path. The workflow passes that sub-path as `--baseurl`;
 `_plugins/baseurl_links.rb` prefixes the hard-coded `/assets/…` and `/<slug>/` links inside the
 exported posts and comments. `_config.yml` keeps `baseurl: ""` for a root domain such as
-madrid.falkorichter.de, where the plugin does nothing. Note: the 301s in `.htaccess` only work
-on Apache, not on GitHub Pages.
+madrid.falkorichter.de, where the plugin does nothing. The workflow also sets `url` to the Pages
+address, so canonical links and the feed point there.
+
+The site is **static only** (no `.htaccess`, no server rules): post URLs `/<slug>/` are folders
+with `index.html`, `404.html` is used by the host, the feed is `/feed.xml`. Old image URLs
+(`/wp-content/…`) are intentionally not redirected; only the post URLs are preserved.
 
 ## Comments
 

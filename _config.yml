@@ -52,8 +52,8 @@ plugins:
   - jekyll-paginate
   - jekyll-feed
 
-feed:
-  path: feed/index.xml          # WordPress served the feed at /feed/
+# Feed at /feed.xml (jekyll-feed default, works on any static host);
+# /feed/ (WordPress' feed URL) is a static page that forwards there, see feed-redirect.html.
 
-include: [.htaccess, _pages]
+include: [_pages]
 exclude: [Gemfile, Gemfile.lock, README.md, vendor, .bundle, _migration]
