@@ -17,7 +17,7 @@ bundle exec jekyll serve      # http://localhost:4000
 | Path | What |
 |---|---|
 | `_layouts/`, `_includes/`, `assets/css/style.css` | the ported theme (changes marked `port:` in the CSS) |
-| `_posts/` | 64 posts, original URLs `/<slug>/` |
+| `_posts/` | 64 posts (Markdown where possible, see below), original URLs `/<slug>/` |
 | `_pages/` | Kontakt, Meine Karte, Über Madrid |
 | `assets/galleries/<gallery>/` (+ `thumbs/`) | the 14 NextGEN galleries used by posts |
 | `assets/images/YYYY/MM/` | other uploaded images |
@@ -27,6 +27,7 @@ bundle exec jekyll serve      # http://localhost:4000
 | `feed-redirect.html` | `/feed/` (the old WordPress feed URL) forwards to `/feed.xml` |
 | `_plugins/taxonomy_pages.rb` | generates the category/tag archive pages |
 | `_migration/export_rest.py` | the exporter (see below) |
+| `_migration/html2md.py`, `kramdown_render.rb`, `compare_builds.py` | HTML → Markdown conversion and its checks (see [Markdown posts](#markdown-posts)) |
 
 ## Re-running the export
 
@@ -41,6 +42,39 @@ It reads the REST API (`?rest_route=`) plus the DB for categories/tags (the 2008
 "shared terms" that current WordPress reports wrongly) and the blogroll. It converts old Flash
 YouTube/Vimeo embeds to iframes, moves every referenced file into `assets/`, and writes
 `_migration/export-report.json`.
+
+## Markdown posts
+
+Posts are stored as **Markdown** (`_posts/*.md`) where that is possible *without changing the
+page*, and stay **HTML** (`_posts/*.html`) otherwise — currently 20 of 64 posts are
+Markdown. Posts with embeds (videos, maps, galleries), `<div>`/`<span>` markup, inline styles etc.
+stay HTML on purpose.
+
+How it works (`_migration/html2md.py`, used by the exporter):
+
+1. **Convert** only a safe subset of HTML: paragraphs, line breaks, links, bold/italic, inline
+   code, headings, lists, quotes, rules and images. Image size and alignment and link targets are
+   kept as kramdown attribute lists, e.g. `![Foto](/assets/…/a.jpg){: .alignleft width="300"}`.
+   Anything else → the post stays HTML.
+2. **Verify**: the Markdown is rendered with Jekyll's own Markdown converter and default
+   kramdown settings (`_migration/kramdown_render.rb`) and compared with the original HTML
+   (normalized: whitespace, entities and attribute order don't count; `loading`/`decoding`
+   and the `wp-block-paragraph` class are ignored). Only an identical result becomes `.md`.
+
+Tools:
+
+```sh
+python3 _migration/html2md.py --dry-run          # how many HTML posts would convert
+python3 _migration/html2md.py [_posts/x.html …]  # convert in place (x.html -> x.md), verified
+python3 _migration/compare_builds.py [REV]       # build REV (default HEAD) and the working
+                                                 # tree, compare every generated page
+```
+
+`compare_builds.py` exits with 1 if the content of any post or page differs. Switching to
+Markdown changed no post content; the only differences were list pages (category/tag archives),
+whose short 55-word teasers now end a word or two earlier, and `<meta name="description">`,
+which shows `…`/`–` instead of `&#8230;`/`&#8211;` (fixed for HTML posts too).
+Needs Ruby with Jekyll (`RBENV_VERSION=3.1.2` locally).
 
 ## GitHub Pages
 

@@ -8,7 +8,8 @@ Source: the WordPress REST API (`?rest_route=`, pretty /wp-json/ is not routed t
 madrid-local/wp-content/mu-plugins/madrid.php, old madrid.falkorichter.de links rewritten.
 
 Writes (and replaces on every run):
-  _posts/YYYY-MM-DD-<slug>.html       the published posts
+  _posts/YYYY-MM-DD-<slug>.md|.html   the published posts: Markdown if html2md.py can convert
+                                      them and they render back identically, else HTML
   _pages/<slug>.html                  the pages (without Newsletter; Impressum only if it has
                                       more than the old Google Analytics notice)
   assets/galleries/<gallery>/…        NextGEN gallery photos (+ thumbs/)
@@ -29,6 +30,8 @@ import sys
 import urllib.request
 from html.parser import HTMLParser
 from urllib.parse import quote, unquote
+
+import html2md  # conservative HTML -> Markdown, only used when it renders back identically
 
 WP = os.environ.get("WP_URL", "http://localhost:8090")
 SITE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -378,6 +381,7 @@ def main():
     dead_page = re.compile(r"""<a[^>]*\shref=["']/(?:%s)/?["'][^>]*>(.*?)</a>""" % skipped, re.S)
     report["dead_links_unwrapped"] = report["dead_images_removed"] = 0
     used_cats, used_tags = {}, {}
+    post_outputs = []
     for p, body in entries:
         body = REF_RE.sub(relink, body)
         body, n = dead_img.subn("", body)
@@ -403,8 +407,19 @@ def main():
                       "categories": categories, "tags": post_tags, "wp_id": p["id"]}
             path = os.path.join(SITE, "_posts", f"{p['date'][:10]}-{p['slug']}.html")
             report["posts"] += 1
+            post_outputs.append((path, front_matter(fields), body))
+            continue
         with open(path, "w", encoding="utf-8") as f:
             f.write(front_matter(fields) + body)
+
+    # Simple posts become Markdown, but only if the Markdown renders back to the same HTML.
+    markdown = html2md.convert_verified({path: body for path, _, body in post_outputs})
+    for path, front, body in post_outputs:
+        if path in markdown:
+            path, body = path[:-len(".html")] + ".md", markdown[path]
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(front + body)
+    report["markdown_posts"] = len(markdown)
 
     # Sidebar/taxonomy data: display name -> original slug (keeps /category|tag/<slug>/ URLs).
     write_json("categories.json", [{"name": n, "slug": s} for n, s in sorted(used_cats.items(), key=lambda c: c[0].lower())])
@@ -428,7 +443,7 @@ def main():
 
     with open(os.path.join(SITE, "_migration", "export-report.json"), "w", encoding="utf-8") as f:
         json.dump(report, f, ensure_ascii=False, indent=2, sort_keys=True)
-    print(f"posts: {report['posts']}  pages: {report['pages']} (skipped {report['skipped_pages']})  "
+    print(f"posts: {report['posts']} ({report['markdown_posts']} as Markdown)  pages: {report['pages']} (skipped {report['skipped_pages']})  "
           f"teasers: {report['teasers']}  comments: {report['comments']}  files: {report['copied_files']} copied, "
           f"{len(moved)} links moved, {len(report['missing_files'])} missing, "
           f"{len(report['skipped_file_types'])} skipped (type)")
