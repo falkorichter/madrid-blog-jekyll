@@ -1,0 +1,127 @@
+---
+title: "Statistiken"
+permalink: "/statistiken/"
+nav: true
+render_with_liquid: true   # hand-written page (the WordPress pages have it off)
+---
+{%- comment -%}
+  New page (not from WordPress). Numbers about posts, comments and galleries are counted at
+  build time, so they stay right after every re-export; the export numbers come from
+  _data/export_report.json (written by _migration/export_rest.py).
+{%- endcomment -%}
+{%- assign posts = site.posts -%}
+{%- assign md_posts = posts | where_exp: "p", "p.path contains '.md'" -%}
+{%- assign html_count = posts.size | minus: md_posts.size -%}
+{%- assign flash_posts = posts | where_exp: "p", "p.content contains 'embed-gone'" | reverse -%}
+{%- assign video_posts = posts | where_exp: "p", "p.content contains 'youtube-nocookie.com/embed' or p.content contains 'youtube.com/embed' or p.content contains 'player.vimeo.com'" -%}
+{%- assign gallery_posts = posts | where_exp: "p", "p.content contains '/assets/galleries/'" -%}
+{%- assign gallery_files = site.static_files | where_exp: "f", "f.path contains '/assets/galleries/'" -%}
+{%- assign gallery_thumbs = gallery_files | where_exp: "f", "f.path contains '/thumbs/'" -%}
+{%- assign gallery_photos = gallery_files.size | minus: gallery_thumbs.size -%}
+{%- assign galleries = gallery_thumbs | group_by_exp: "f", "f.path | split: '/thumbs/' | first" -%}
+{%- assign comments = site.data.comments -%}
+{%- assign by_post = comments | group_by: "url" | sort: "size" | reverse -%}
+{%- assign by_author = comments | group_by_exp: "c", "c.author | downcase" | sort: "size" | reverse -%}
+{%- assign by_month = posts | group_by_exp: "p", "p.date | date: '%Y-%m'" | sort: "name" -%}
+{%- assign report = site.data.export_report -%}
+{%- assign words = 0 -%}{%- assign images = 0 -%}{%- assign longest_words = 0 -%}
+{%- for p in posts -%}
+  {%- assign w = p.content | strip_html | number_of_words -%}
+  {%- assign words = words | plus: w -%}
+  {%- if w > longest_words %}{% assign longest_words = w %}{% assign longest = p %}{% endif -%}
+  {%- assign i = p.content | split: "<img" | size | minus: 1 -%}
+  {%- assign images = images | plus: i -%}
+{%- endfor -%}
+{%- assign first_post = posts | last -%}{%- assign last_post = posts | first -%}
+{%- assign first_comment = comments | first -%}{%- assign last_comment = comments | last -%}
+
+<p>Zahlen und Kurioses rund um „Falko en Madrid“ und den Umzug von WordPress zu einer
+statischen Seite (2026).</p>
+
+<h3>Beiträge</h3>
+<table class="stats">
+	<tr><th>Beiträge</th><td>{{ posts.size }}</td></tr>
+	<tr><th>Zeitraum</th><td>{{ first_post.date | date: "%d.%m.%Y" }} – {{ last_post.date | date: "%d.%m.%Y" }}</td></tr>
+	<tr><th>davon als Markdown gespeichert</th><td>{{ md_posts.size }}</td></tr>
+	<tr><th>davon als HTML gespeichert</th><td>{{ html_count }}</td></tr>
+	<tr><th>Wörter insgesamt</th><td>{{ words }}</td></tr>
+	<tr><th>Längster Beitrag</th><td><a href="{{ longest.url | relative_url }}">{{ longest.title }}</a> ({{ longest_words }} Wörter)</td></tr>
+	<tr><th>Bilder in Beiträgen (inkl. Galerie-Vorschauen)</th><td>{{ images }}</td></tr>
+	<tr><th>Beiträge mit Video (YouTube, Vimeo)</th><td>{{ video_posts.size }}</td></tr>
+	<tr><th>Beiträge mit „Flash-Video (nicht mehr abspielbar)“</th><td>{{ flash_posts.size }}</td></tr>
+</table>
+<p class="stats-note">Markdown nur dort, wo der Beitrag dadurch exakt gleich aussieht; alles mit
+Videos, Karten, Galerien oder besonderem Markup bleibt HTML. Alle alten Flash-Videos waren
+YouTube oder Vimeo und laufen heute als normale Einbettung weiter.</p>
+{%- if flash_posts.size > 0 %}
+<ul class="stats-list">
+	{%- for p in flash_posts %}
+	<li><a href="{{ p.url | relative_url }}">{{ p.title }}</a> <span class="meta">({{ p.date | date: "%d.%m.%Y" }})</span></li>
+	{%- endfor %}
+</ul>
+{%- endif %}
+
+<h3>Beiträge pro Monat</h3>
+<table class="stats">
+	{%- for m in by_month %}
+	<tr><th>{{ m.items[0].date | date: "%m/%Y" }}</th><td>{{ m.size }}</td></tr>
+	{%- endfor %}
+</table>
+
+<h3>Fotogalerien</h3>
+<table class="stats">
+	<tr><th>Galerien</th><td>{{ galleries.size }}</td></tr>
+	<tr><th>Fotos darin</th><td>{{ gallery_photos }}</td></tr>
+	<tr><th>Beiträge mit Galerie</th><td>{{ gallery_posts.size }}</td></tr>
+</table>
+
+<h3>Kommentare</h3>
+<table class="stats">
+	<tr><th>Kommentare</th><td>{{ comments.size }}</td></tr>
+	<tr><th>Beiträge mit Kommentaren</th><td>{{ by_post.size }}</td></tr>
+	{%- if comments.size > 0 %}
+	<tr><th>Erster Kommentar</th><td>{{ first_comment.date | date: "%d.%m.%Y" }}</td></tr>
+	<tr><th>Letzter Kommentar</th><td>{{ last_comment.date | date: "%d.%m.%Y" }}</td></tr>
+	{%- endif %}
+</table>
+
+<h3>Die fleißigsten Kommentatoren</h3>
+<table class="stats">
+	{%- for a in by_author limit: 10 %}
+	<tr><th>{{ a.items[0].author | escape }}</th><td>{{ a.size }}</td></tr>
+	{%- endfor %}
+</table>
+
+<h3>Alle Beiträge mit Kommentaren</h3>
+<ol class="stats-list">
+	{%- for g in by_post %}
+	<li><a href="{{ g.name | relative_url }}#comments">{{ g.items[0].post_title }}</a> <span class="meta">({% if g.size == 1 %}1 Kommentar{% else %}{{ g.size }} Kommentare{% endif %})</span></li>
+	{%- endfor %}
+</ol>
+
+<h3>Vom Umzug</h3>
+<table class="stats">
+	<tr><th>Software vorher</th><td>WordPress 3.1.1, Theme „Falko en Madrid“ (auf Basis von Beauty Bling)</td></tr>
+	<tr><th>In der alten Datenbank</th><td>64 Beiträge und 5 Seiten ({{ report.pages }} übernommen; ohne {% for s in report.skipped_pages %}{{ s | capitalize }}{% unless forloop.last %} und {% endunless %}{% endfor %}), 16 NextGEN-Galerien</td></tr>
+	<tr><th>Übernommene Dateien</th><td>{{ report.copied_files }} (Fotos, Vorschaubilder, Bilder); {{ report.missing_files | size }} fehlende</td></tr>
+	<tr><th>Tote Links entfernt</th><td>{{ report.dead_links_unwrapped }}</td></tr>
+	<tr><th>Beiträge mit „more“-Teaser</th><td>{{ report.teasers }}</td></tr>
+</table>
+
+<h3>Kurioses</h3>
+<ul class="stats-list">
+	<li>In der Datenbank lagen rund <strong>1.500 Spam-Kommentare</strong> aus 2014–2019
+	(Autoversicherungen, Cialis, …), automatisch freigegeben, weil die Kommentare noch offen waren.
+	Übrig blieben die {{ comments.size }} echten aus 2008/09.</li>
+	<li>Alle Theme-Dateien <code>header.php</code> waren seit September 2016 <strong>infiziert</strong>:
+	nach 61 Leerzeilen lud ein Skript einmal täglich pro Besucher Schadcode nach.
+	Die statische Seite hat kein PHP mehr.</li>
+	<li>Die Galerien kamen vom Plugin NextGEN Gallery (<code>[gallery=N]</code>); sie sind jetzt
+	einfache Vorschau-Raster mit Lightbox.</li>
+	<li>Die Karte in der Seitenleiste zeigte bei jedem Aufruf zufällig einen von vier Ausschnitten –
+	das macht sie immer noch.</li>
+	<li>Alle alten Adressen <code>/&lt;beitrag&gt;/</code>, <code>/category/…</code> und
+	<code>/tag/…</code> funktionieren weiter.</li>
+</ul>
+
+<p>Schwesterblog: <a href="https://falkorichter.github.io/volkersfreunde-jekyll/statistiken/">volkersfreunde – Statistiken</a></p>

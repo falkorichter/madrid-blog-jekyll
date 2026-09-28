@@ -512,3 +512,35 @@ dialog.lightbox button[hidden] { display: none; }
 	dialog.lightbox figure { padding: 52px 8px; }
 	dialog.lightbox .lightbox-prev, dialog.lightbox .lightbox-next { top: auto; bottom: 8px; transform: none; }
 }
+
+/* port: Statistiken page (_pages/statistiken.html) */
+.storycontent h3 {
+	margin-top: 20px;
+}
+
+table.stats {
+	margin: 0 0 12px 0;
+	border-collapse: collapse;
+}
+
+table.stats th, table.stats td {
+	padding: 3px 16px 3px 0;
+	border-bottom: 1px dotted #ccc;
+	text-align: left;
+	vertical-align: top;
+	font-size: 13px;
+}
+
+table.stats th {
+	font-weight: normal;
+	color: #666;
+}
+
+.stats-list li {
+	margin-bottom: 4px;
+}
+
+p.stats-note, .stats-list .meta {
+	font-size: 11px;
+	color: #888;
+}

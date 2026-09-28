@@ -15,7 +15,7 @@ Writes (and replaces on every run):
   assets/galleries/<gallery>/…        NextGEN gallery photos (+ thumbs/)
   assets/images/YYYY/MM/…, assets/files/YYYY/MM/…   other referenced uploads
   _data/{categories,tags,blogroll,comments}.json
-  _migration/export-report.json
+  _data/export_report.json
 
 Read-only towards WordPress and the DB. Usage (from the madrid-site/ folder):
   python3 _migration/export_rest.py
@@ -441,7 +441,7 @@ def main():
     report["comments"] = len(data)
 
 
-    with open(os.path.join(SITE, "_migration", "export-report.json"), "w", encoding="utf-8") as f:
+    with open(os.path.join(SITE, "_data", "export_report.json"), "w", encoding="utf-8") as f:
         json.dump(report, f, ensure_ascii=False, indent=2, sort_keys=True)
     print(f"posts: {report['posts']} ({report['markdown_posts']} as Markdown)  pages: {report['pages']} (skipped {report['skipped_pages']})  "
           f"teasers: {report['teasers']}  comments: {report['comments']}  files: {report['copied_files']} copied, "
