@@ -12,6 +12,17 @@ bundle install
 bundle exec jekyll serve      # http://localhost:4000
 ```
 
+Search (`/suche/`) uses [Pagefind](https://pagefind.app): the index is built from the
+finished HTML after `jekyll build` (the Pages workflow does this). `jekyll serve` has no
+index; to try the search locally:
+
+```sh
+bundle exec jekyll build && npx -y pagefind@1.5.2 --site _site --serve   # http://localhost:1414/suche/
+```
+
+Indexed: post title and text (`data-pagefind-body` in `_layouts/post.html`), with year and
+category filters (`_includes/search-meta.html`); comments and the meta line are left out.
+
 ## What's here
 
 | Path | What |

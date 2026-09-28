@@ -35,6 +35,8 @@ jobs:
           bundle exec jekyll build --config "_config.yml,$RUNNER_TEMP/pages.yml"
         env:
           JEKYLL_ENV: production
+      # Full-text search index for /suche/ (Pagefind reads the built HTML → _site/pagefind/)
+      - run: npx -y pagefind@1.5.2 --site _site
       - uses: actions/upload-pages-artifact@v3
 
   deploy:

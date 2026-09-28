@@ -1,0 +1,9 @@
+{%- comment -%}
+  Pagefind (search index, built after jekyll build in the Pages workflow): filters and the
+  result date for one post. Empty spans; Pagefind reads only the attributes.
+{%- endcomment -%}
+<span data-pagefind-meta="datum:{% include date-en.html date=include.post.date %}"></span>
+<span data-pagefind-filter="Jahr:{{ include.post.date | date: '%Y' }}"></span>
+{%- for c in include.post.categories %}
+<span data-pagefind-filter="Kategorie:{{ c | escape }}"></span>
+{%- endfor %}
