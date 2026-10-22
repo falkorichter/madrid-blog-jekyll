@@ -5,7 +5,7 @@ converted from WordPress to a static Jekyll site with a port of its original the
 `falkoenmadrid` (based on *Beauty Bling*).
 
 * [ ] bring back `madrid.falkorichter.de`
-* [x] serve via github pages
+* [x] serve via github pages https://falkorichter.github.io/madrid-blog-jekyll/
 
 ```sh
 bundle install
